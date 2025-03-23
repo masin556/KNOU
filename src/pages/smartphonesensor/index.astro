@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import WordCard from '../../components/WordCard.astro';
+
+let words = [
+  {
+    title: '조도 센서',
+    href: '/smartphonesensor/illuminationsensor',
+    image: '/images/illuminationsensor.jpg',
+    description: '주변 빛의 양을 측정하는 센서',
+  },
+  {
+    title: '가속도 센서',
+    href: '/smartphonesensor/accelerometersensor',
+    description: '가속도를 측정하는 센서',
+  },
+];
+
+function addWord() {
+  const newWordTitle = prompt('새로운 단어 이름을 입력하세요:');
+  const newWordDescription = prompt('새로운 단어 설명을 입력하세요:');
+  if (newWordTitle && newWordDescription) {
+    const newWord = {
+      title: newWordTitle,
+      href: `/smartphonesensor/${newWordTitle.replace(/\s+/g, '-').toLowerCase()}`,
+      description: newWordDescription,
+      // image: 나중에 이미지 추가 기능 구현
+    };
+    words = [...words, newWord];
+     // Force a re-render to update the UI
+    Astro.createComponent(document.querySelector('astro-island'));
+  }
+}
+---
+
+<Layout title="스마트폰 센서">
+  <main>
+    <section class="header">
+      <h1>스마트폰 센서</h1>
+    </section>
+
+    <section class="word-list">
+      <ul>
+        {words.map((word) => (
+          <WordCard
+            href={word.href}
+            title={word.title}
+            description={word.description}
+            image={word.image}
+          />
+        ))}
+      </ul>
+      <div class="add-word-box">
+        <button class="add-word-button" onclick={addWord}>+ 단어 추가</button>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    color: black;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    font-family: sans-serif;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .word-list {
+    margin-top: 20px;
+  }
+
+  .word-list ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .add-word-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .add-word-button {
+    background: none;
+    border: 2px dashed #888;
+    color: #555;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+</style>

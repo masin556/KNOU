@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
+let categories = [
+  {
+    name: '스마트폰 센서',
+    href: '/smartphonesensor',
+  },
+  {
+    name: '언리얼엔진',
+    href: '/unrealengine',
+  },
+  {
+    name: '자료구조',
+    href: '/datastructure',
+  },
+  {
+    name: '알고리즘',
+    href: '/algorithm',
+  },
+  {
+    name: '인공지능',
+    href: '/artificialintelligence',
+  },
+];
+
+function addCategory() {
+  const newCategoryName = prompt('새로운 대분류 이름을 입력하세요:');
+  if (newCategoryName) {
+    const newCategory = {
+      name: newCategoryName,
+      href: `/${newCategoryName.replace(/\s+/g, '-').toLowerCase()}`, // 공백을 '-'로 대체하여 href 생성
+    };
+    categories = [...categories, newCategory];
+    // Force a re-render to update the UI
+    Astro.createComponent(document.querySelector('astro-island'));
+  }
+}
+---
+
+<Layout title="My Wordbook">
+  <main>
+    <section class="header">
+      <h1>학과 : 컴퓨터과학과 | 이름 : 신충식</h1>
+    </section>
+
+    <section class="dictionary">
+      <h2>Dictionary</h2>
+      <div class="category-grid">
+        {categories.map((category) => (
+          <Card
+            href={category.href}
+            title={category.name}
+            body=""
+          />
+        ))}
+        <div class="add-category-box">
+          <button class="add-category-button" onclick={addCategory}>+ 대분류 추가</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="copyright">
+      <p>@copyright ppatabox</p>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    color: black;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    font-family: sans-serif;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .dictionary {
+    margin-top: 20px;
+  }
+
+  .dictionary h2 {
+    margin-bottom: 15px;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .add-category-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .add-category-button {
+    background: none;
+    border: 2px dashed #888;
+    color: #555;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .copyright {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  /* Card component adjustments to look like boxes */
+  .link-card {
+    background-color: #e0e0e0;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .link-card:hover {
+    transform: scale(1.05);
+  }
+
+  .link-card > a {
+    background-color: transparent; /* Remove background from link */
+    color: black; /* Set text color to black */
+    opacity: 1; /* Ensure opacity is 1 */
+  }
+
+  .link-card h2 {
+    color: #333;
+  }
+
+  .link-card p {
+    color: #666;
+  }
+</style>
